@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 300,
+              height: MediaQuery.of(context).size.height / 3,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

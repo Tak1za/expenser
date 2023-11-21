@@ -5,47 +5,8 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 
 class ExpenseList extends StatelessWidget {
-  ExpenseList({super.key});
-
-  static DateTime currentTime = DateTime.now();
-  final dataToRender = [
-    Expense(
-      timestamp: currentTime.subtract(const Duration(days: 4)),
-      category: "Pets",
-      description: "Treats",
-      amount: 520,
-    ),
-    Expense(
-      timestamp: currentTime.subtract(const Duration(days: 3)),
-      category: "Snacks",
-      description: "",
-      amount: 340,
-    ),
-    Expense(
-      timestamp: currentTime.subtract(const Duration(days: 3)),
-      category: "Coffee",
-      description: "Starbucks",
-      amount: 350,
-    ),
-    Expense(
-      timestamp: currentTime.subtract(const Duration(days: 2)),
-      category: "Gifts",
-      description: "Sanyam's Birthday",
-      amount: 1250,
-    ),
-    Expense(
-      timestamp: currentTime.subtract(const Duration(days: 1)),
-      category: "Coffee",
-      description: "Starbucks",
-      amount: 350,
-    ),
-    Expense(
-      timestamp: currentTime,
-      category: "Dinner",
-      description: "Call me Chow",
-      amount: 270,
-    ),
-  ];
+  final List<Expense> dataToRender;
+  const ExpenseList({super.key, required this.dataToRender});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +23,11 @@ class ExpenseList extends StatelessWidget {
             value.day == DateTime.now().day
                 ? "Today"
                 : value.day ==
-                        DateTime.now().subtract(const Duration(days: 1)).day
+                        DateTime.now()
+                            .subtract(
+                              const Duration(days: 1),
+                            )
+                            .day
                     ? "Yesterday"
                     : DateFormat.yMMMEd('en_US').format(value),
             textAlign: TextAlign.left,

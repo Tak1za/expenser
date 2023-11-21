@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+  static const _locale = "en_IN";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,8 +53,9 @@ class HomePage extends StatelessWidget {
                   ),
                   Text(
                     NumberFormat.currency(
-                      locale: "en_IN",
-                      symbol: "₹ ",
+                      locale: _locale,
+                      symbol:
+                          "${NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol} ",
                       decimalDigits: 0,
                     ).format(2500),
                     style: Theme.of(context).textTheme.displayLarge,

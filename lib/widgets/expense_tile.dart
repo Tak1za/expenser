@@ -7,6 +7,8 @@ class ExpenseTile extends StatelessWidget {
 
   const ExpenseTile({super.key, required this.expense});
 
+  static const _locale = "en_IN";
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,7 +48,8 @@ class ExpenseTile extends StatelessWidget {
           Text(
             NumberFormat.currency(
               locale: "en_IN",
-              symbol: "₹ ",
+              symbol:
+                  "${NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol} ",
               decimalDigits: 0,
             ).format(expense.amount),
             style: Theme.of(context).textTheme.labelMedium,

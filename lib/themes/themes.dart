@@ -5,11 +5,10 @@ class Theme {
   static ThemeData dark() {
     return ThemeData(
       colorScheme: ColorScheme.fromSwatch().copyWith(
-        primary: Colors.deepPurple[200],
-        primaryContainer: const Color(0x003700B3),
-        secondary: Colors.teal[200],
+        primary: const Color(0xFF263238),
+        secondary: const Color(0xFF455A64),
         background: Colors.black,
-        surface: Colors.teal[900],
+        surface: const Color(0xFF263238),
         error: const Color(0x00CF6679),
         onPrimary: Colors.black,
         onSecondary: Colors.black,
@@ -18,13 +17,13 @@ class Theme {
         onError: Colors.black,
         brightness: Brightness.dark,
       ),
-      iconButtonTheme: IconButtonThemeData(
+      iconButtonTheme: const IconButtonThemeData(
         style: ButtonStyle(
-          backgroundColor: MaterialStatePropertyAll(Colors.teal[900]),
+          backgroundColor: MaterialStatePropertyAll(Color(0xFF263238)),
         ),
       ),
       useMaterial3: true,
-      splashColor: Colors.deepPurple[200],
+      splashColor: Colors.purple[200],
       textTheme: TextTheme(
         labelLarge: const TextStyle(
           color: Colors.white,

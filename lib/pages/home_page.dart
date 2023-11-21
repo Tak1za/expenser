@@ -19,6 +19,7 @@ class HomePage extends StatelessWidget {
                   icon: const Icon(
                     Icons.add,
                     size: 25,
+                    color: Colors.white,
                   ),
                   style: Theme.of(context).iconButtonTheme.style,
                 )

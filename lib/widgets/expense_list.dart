@@ -1,4 +1,5 @@
 import 'package:expenser/models/expense.dart';
+import 'package:expenser/widgets/expense_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
@@ -69,45 +70,7 @@ class ExpenseList extends StatelessWidget {
           ),
         ),
         itemBuilder: (c, element) {
-          return Card(
-            elevation: 8,
-            margin: const EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 6,
-            ),
-            child: SizedBox(
-              child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 10,
-                ),
-                leading: const Icon(Icons.account_balance),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      element.category,
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                    element.description != ""
-                        ? Text(
-                            element.description,
-                            style: Theme.of(context).textTheme.bodySmall,
-                          )
-                        : Container(),
-                  ],
-                ),
-                trailing: Text(
-                  NumberFormat.currency(
-                    locale: "en_IN",
-                    symbol: "₹ ",
-                    decimalDigits: 0,
-                  ).format(element.amount),
-                  style: Theme.of(context).textTheme.labelMedium,
-                ),
-              ),
-            ),
-          );
+          return ExpenseTile(expense: element);
         },
       ),
     );

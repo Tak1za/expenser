@@ -11,19 +11,26 @@ class HomePage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton.filled(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.add,
-                    size: 25,
-                    color: Colors.white,
-                  ),
-                  style: Theme.of(context).iconButtonTheme.style,
-                )
-              ],
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton.outlined(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.add,
+                      size: 25,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(
+                        Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
             SizedBox(
               height: MediaQuery.of(context).size.height / 3,

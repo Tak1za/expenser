@@ -1,4 +1,5 @@
 import 'package:expenser/models/expense.dart';
+import 'package:expenser/utils/date_helper.dart';
 import 'package:expenser/widgets/expense_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -6,7 +7,11 @@ import 'package:intl/intl.dart';
 
 class ExpenseList extends StatelessWidget {
   final List<Expense> dataToRender;
-  const ExpenseList({super.key, required this.dataToRender});
+  ExpenseList({super.key, required this.dataToRender});
+
+  static DateTime now = DateTime.now();
+  final today = DateTime(now.year, now.month, now.day);
+  final yesterday = DateTime(now.year, now.month, now.day - 1);
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +25,9 @@ class ExpenseList extends StatelessWidget {
         groupSeparatorBuilder: (DateTime value) => Padding(
           padding: const EdgeInsets.all(8),
           child: Text(
-            value.day == DateTime.now().day
+            value.isToday
                 ? "Today"
-                : value.day ==
-                        DateTime.now()
-                            .subtract(
-                              const Duration(days: 1),
-                            )
-                            .day
+                : value.isYesterday
                     ? "Yesterday"
                     : DateFormat.yMMMEd('en_US').format(value),
             textAlign: TextAlign.left,

@@ -48,12 +48,12 @@ class Theme {
         labelLarge: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 30,
+          fontSize: 20,
         ),
         labelMedium: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 20,
+          fontSize: 18,
         ),
         labelSmall: TextStyle(
           color: Colors.white,
@@ -62,29 +62,26 @@ class Theme {
         ),
         headlineLarge: TextStyle(
           color: Colors.white,
-          fontSize: 30,
-          fontFamily: "Exo",
+          fontSize: 20,
           fontWeight: FontWeight.w700,
         ),
         headlineMedium: TextStyle(
           color: Colors.white,
-          fontSize: 20,
-          fontFamily: "Exo",
+          fontSize: 18,
           fontWeight: FontWeight.w700,
         ),
         headlineSmall: TextStyle(
           color: Colors.white,
           fontSize: 15,
-          fontFamily: "Exo",
           fontWeight: FontWeight.w700,
         ),
         bodyLarge: TextStyle(
           color: Colors.grey,
-          fontSize: 30,
+          fontSize: 20,
         ),
         bodyMedium: TextStyle(
           color: Colors.grey,
-          fontSize: 20,
+          fontSize: 18,
         ),
         bodySmall: TextStyle(
           color: Colors.grey,
@@ -156,12 +153,12 @@ class Theme {
         labelLarge: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
-          fontSize: 30,
+          fontSize: 20,
         ),
         labelMedium: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
-          fontSize: 20,
+          fontSize: 18,
         ),
         labelSmall: TextStyle(
           color: Colors.black,
@@ -170,13 +167,13 @@ class Theme {
         ),
         headlineLarge: TextStyle(
           color: Colors.black,
-          fontSize: 30,
+          fontSize: 20,
           fontFamily: "Exo",
           fontWeight: FontWeight.w700,
         ),
         headlineMedium: TextStyle(
           color: Colors.black,
-          fontSize: 20,
+          fontSize: 18,
           fontFamily: "Exo",
           fontWeight: FontWeight.w700,
         ),
@@ -188,11 +185,11 @@ class Theme {
         ),
         bodyLarge: TextStyle(
           color: Colors.grey,
-          fontSize: 30,
+          fontSize: 20,
         ),
         bodyMedium: TextStyle(
           color: Colors.grey,
-          fontSize: 20,
+          fontSize: 18,
         ),
         bodySmall: TextStyle(
           color: Colors.grey,

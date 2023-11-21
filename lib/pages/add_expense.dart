@@ -1,16 +1,39 @@
+import 'package:expenser/utils/date_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class AddExpense extends StatelessWidget {
-  AddExpense({super.key});
+class AddExpense extends StatefulWidget {
+  const AddExpense({super.key});
 
-  final _amountController = TextEditingController();
-  final _noteController = TextEditingController();
   static const _locale = 'en_IN';
+
+  @override
+  State<AddExpense> createState() => _AddExpenseState();
+}
+
+class _AddExpenseState extends State<AddExpense> {
+  final _amountController = TextEditingController();
+
+  final _noteController = TextEditingController();
+
   String _formatNumber(String s) =>
-      NumberFormat.decimalPattern(_locale).format(s != "" ? int.parse(s) : 0);
+      NumberFormat.decimalPattern(AddExpense._locale)
+          .format(s != "" ? int.parse(s) : 0);
+
   String get _currency =>
-      NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol;
+      NumberFormat.compactSimpleCurrency(locale: AddExpense._locale)
+          .currencySymbol;
+
+  DateTime _selectedDate = DateTime.now();
+
+  static DateTime now = DateTime.now();
+  final today = DateTime(now.year, now.month, now.day);
+  final yesterday = DateTime(now.year, now.month, now.day - 1);
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,12 +183,30 @@ class AddExpense extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextButton.icon(
-                          onPressed: () {},
+                          onPressed: () async {
+                            await showDatePicker(
+                              context: context,
+                              initialDate: _selectedDate,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime.now(),
+                            ).then((selectedDate) {
+                              if (selectedDate != null) {
+                                setState(() {
+                                  _selectedDate = selectedDate;
+                                });
+                              }
+                            });
+                          },
                           icon: const Icon(
                             Icons.calendar_month,
                           ),
                           label: Text(
-                            'Today',
+                            _selectedDate.isToday
+                                ? 'Today'
+                                : _selectedDate.isYesterday
+                                    ? 'Yesterday'
+                                    : DateFormat.yMMMEd('en_US')
+                                        .format(_selectedDate),
                             style: Theme.of(context).textTheme.labelMedium,
                           ),
                         ),

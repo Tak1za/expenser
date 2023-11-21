@@ -1,3 +1,4 @@
+import 'package:expenser/pages/add_expense.dart';
 import 'package:expenser/widgets/expense_list.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +18,14 @@ class HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton.outlined(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddExpense(),
+                        ),
+                      );
+                    },
                     icon: Icon(
                       Icons.add,
                       size: 25,

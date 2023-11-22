@@ -1,9 +1,11 @@
+import 'package:expenser/models/expense.dart';
 import 'package:expenser/utils/date_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class AddExpense extends StatefulWidget {
-  const AddExpense({super.key});
+  final Function addExpense;
+  const AddExpense({super.key, required this.addExpense});
 
   static const _locale = 'en_IN';
 
@@ -24,11 +26,9 @@ class _AddExpenseState extends State<AddExpense> {
       NumberFormat.compactSimpleCurrency(locale: AddExpense._locale)
           .currencySymbol;
 
-  DateTime _selectedDate = DateTime.now();
-
-  static DateTime now = DateTime.now();
-  final today = DateTime(now.year, now.month, now.day);
-  final yesterday = DateTime(now.year, now.month, now.day - 1);
+  static final DateTime _selectedTime = DateTime.now();
+  var _selectedDate =
+      DateTime(_selectedTime.year, _selectedTime.month, _selectedTime.day);
 
   @override
   void initState() {
@@ -233,7 +233,18 @@ class _AddExpenseState extends State<AddExpense> {
                       ],
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        widget.addExpense(
+                          Expense(
+                            category: "Test",
+                            amount: double.parse(
+                                _amountController.text.replaceAll(',', '')),
+                            description: _noteController.text,
+                            timestamp: _selectedDate,
+                          ),
+                        );
+                        Navigator.pop(context);
+                      },
                       style: ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(
                           Theme.of(context).colorScheme.primaryContainer,

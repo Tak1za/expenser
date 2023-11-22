@@ -7,11 +7,7 @@ import 'package:intl/intl.dart';
 
 class ExpenseList extends StatelessWidget {
   final List<Expense> dataToRender;
-  ExpenseList({super.key, required this.dataToRender});
-
-  static DateTime now = DateTime.now();
-  final today = DateTime(now.year, now.month, now.day);
-  final yesterday = DateTime(now.year, now.month, now.day - 1);
+  const ExpenseList({super.key, required this.dataToRender});
 
   @override
   Widget build(BuildContext context) {

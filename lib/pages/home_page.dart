@@ -4,49 +4,63 @@ import 'package:expenser/widgets/expense_list.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   static const _locale = "en_IN";
-  static DateTime currentTime = DateTime.now();
-  final dataToRender = [
+  static final DateTime currentTime = DateTime.now();
+  static DateTime currentDate =
+      DateTime(currentTime.year, currentTime.month, currentTime.day);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  var dataToRender = [
     Expense(
-      timestamp: currentTime.subtract(const Duration(days: 4)),
+      timestamp: HomePage.currentDate.subtract(const Duration(days: 4)),
       category: "Pets",
       description: "Treats",
       amount: 520,
     ),
     Expense(
-      timestamp: currentTime.subtract(const Duration(days: 3)),
+      timestamp: HomePage.currentDate.subtract(const Duration(days: 3)),
       category: "Snacks",
       description: "",
       amount: 340,
     ),
     Expense(
-      timestamp: currentTime.subtract(const Duration(days: 3)),
+      timestamp: HomePage.currentDate.subtract(const Duration(days: 3)),
       category: "Coffee",
       description: "Starbucks",
       amount: 350,
     ),
     Expense(
-      timestamp: currentTime.subtract(const Duration(days: 2)),
+      timestamp: HomePage.currentDate.subtract(const Duration(days: 2)),
       category: "Gifts",
       description: "Sanyam's Birthday",
       amount: 1250,
     ),
     Expense(
-      timestamp: currentTime.subtract(const Duration(days: 1)),
+      timestamp: HomePage.currentDate.subtract(const Duration(days: 1)),
       category: "Coffee",
       description: "Starbucks",
       amount: 350,
     ),
     Expense(
-      timestamp: currentTime,
+      timestamp: HomePage.currentDate,
       category: "Dinner",
       description: "Call me Chow",
       amount: 270,
     ),
   ];
+
+  void addExpense(Expense expense) {
+    setState(() {
+      dataToRender.add(expense);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +78,8 @@ class HomePage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const AddExpense(),
+                          builder: (context) =>
+                              AddExpense(addExpense: addExpense),
                         ),
                       );
                     },
@@ -93,9 +108,9 @@ class HomePage extends StatelessWidget {
                   ),
                   Text(
                     NumberFormat.currency(
-                      locale: _locale,
+                      locale: HomePage._locale,
                       symbol:
-                          "${NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol} ",
+                          "${NumberFormat.compactSimpleCurrency(locale: HomePage._locale).currencySymbol} ",
                       decimalDigits: 0,
                     ).format(
                       dataToRender.fold(

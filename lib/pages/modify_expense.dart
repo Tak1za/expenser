@@ -39,6 +39,8 @@ class _ModifyExpenseState extends State<ModifyExpense> {
 
   var _selectedModeOfPayment = 'Credit Card';
 
+  var _selectedCategory = 'Groceries';
+
   @override
   void initState() {
     super.initState();
@@ -50,6 +52,7 @@ class _ModifyExpenseState extends State<ModifyExpense> {
       ).format(widget.expenseToEdit!.amount);
       _noteController.text = widget.expenseToEdit!.description.toString();
       _selectedModeOfPayment = widget.expenseToEdit!.modeOfPayment;
+      _selectedCategory = widget.expenseToEdit!.category;
       _selectedDate = widget.expenseToEdit!.timestamp;
     }
   }
@@ -294,12 +297,161 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                           ),
                         ),
                         TextButton.icon(
-                          onPressed: () {},
+                          onPressed: () => showBarModalBottomSheet(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.background,
+                            context: context,
+                            builder: (context) => Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ListTile(
+                                  title: const Text('Groceries'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Groceries';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Snacks'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Snacks';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Food'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Food';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Coffee'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Coffee';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Drinks'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Drinks';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Clothing'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Clothing';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Accessories'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Accessories';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Gifts'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Gifts';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Entertainment'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Entertainment';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Home'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Home';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Tech'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Tech';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Subscriptions'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Subscriptions';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Cab'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Cab';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Health'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedCategory = 'Health';
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                           icon: const Icon(
                             Icons.category,
                           ),
                           label: Text(
-                            'Category',
+                            _selectedCategory,
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ),
@@ -311,7 +463,7 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                           widget.addExpense!(
                             Expense(
                               id: uuid.v4(),
-                              category: "Test",
+                              category: _selectedCategory,
                               amount: double.parse(
                                   _amountController.text.replaceAll(',', '')),
                               modeOfPayment: _selectedModeOfPayment,
@@ -326,7 +478,7 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                           widget.editExpense!(
                             Expense(
                               id: widget.expenseToEdit!.id,
-                              category: "Test",
+                              category: _selectedCategory,
                               amount: double.parse(
                                   _amountController.text.replaceAll(',', '')),
                               modeOfPayment: _selectedModeOfPayment,

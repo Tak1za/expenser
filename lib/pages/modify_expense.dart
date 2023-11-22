@@ -3,6 +3,7 @@ import 'package:expenser/utils/date_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:uuid/uuid.dart';
 
 class ModifyExpense extends StatefulWidget {
@@ -36,6 +37,8 @@ class _ModifyExpenseState extends State<ModifyExpense> {
   var _selectedDate =
       DateTime(_selectedTime.year, _selectedTime.month, _selectedTime.day);
 
+  var _selectedModeOfPayment = 'Credit Card';
+
   @override
   void initState() {
     super.initState();
@@ -46,6 +49,7 @@ class _ModifyExpenseState extends State<ModifyExpense> {
         decimalDigits: 0,
       ).format(widget.expenseToEdit!.amount);
       _noteController.text = widget.expenseToEdit!.description.toString();
+      _selectedModeOfPayment = widget.expenseToEdit!.modeOfPayment;
       _selectedDate = widget.expenseToEdit!.timestamp;
     }
   }
@@ -231,12 +235,61 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                           ),
                         ),
                         TextButton.icon(
-                          onPressed: () {},
+                          onPressed: () => showBarModalBottomSheet(
+                            backgroundColor:
+                                Theme.of(context).colorScheme.background,
+                            context: context,
+                            builder: (context) => Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ListTile(
+                                  title: const Text('Credit Card'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedModeOfPayment = 'Credit Card';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Cash'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedModeOfPayment = 'Cash';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Debit Card'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedModeOfPayment = 'Debit Card';
+                                    });
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Account'),
+                                  leading: const Icon(Icons.numbers),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _selectedModeOfPayment = 'Account';
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                           icon: const Icon(
-                            Icons.credit_card,
+                            Icons.attach_money,
                           ),
                           label: Text(
-                            'Credit Card',
+                            _selectedModeOfPayment,
                             style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ),
@@ -261,6 +314,7 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                               category: "Test",
                               amount: double.parse(
                                   _amountController.text.replaceAll(',', '')),
+                              modeOfPayment: _selectedModeOfPayment,
                               description: _noteController.text,
                               timestamp: _selectedDate,
                             ),
@@ -275,6 +329,7 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                               category: "Test",
                               amount: double.parse(
                                   _amountController.text.replaceAll(',', '')),
+                              modeOfPayment: _selectedModeOfPayment,
                               description: _noteController.text,
                               timestamp: _selectedDate,
                             ),

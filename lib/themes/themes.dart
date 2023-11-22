@@ -84,14 +84,12 @@ class Theme {
         systemOverlayStyle: SystemUiOverlayStyle.light,
         titleTextStyle: TextStyle(
           color: Colors.white,
-          fontSize: 20,
         ),
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
         actionsIconTheme: IconThemeData(
           color: Colors.white,
-          size: 40,
         ),
         color: Colors.black,
       ),
@@ -144,47 +142,35 @@ class Theme {
         labelLarge: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
-          fontSize: 20,
         ),
         labelMedium: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
-          fontSize: 18,
         ),
         labelSmall: TextStyle(
           color: Colors.black,
           fontWeight: FontWeight.bold,
-          fontSize: 15,
         ),
         headlineLarge: TextStyle(
           color: Colors.black,
-          fontSize: 20,
-          fontFamily: "Exo",
           fontWeight: FontWeight.w700,
         ),
         headlineMedium: TextStyle(
           color: Colors.black,
-          fontSize: 18,
-          fontFamily: "Exo",
           fontWeight: FontWeight.w700,
         ),
         headlineSmall: TextStyle(
           color: Colors.black,
-          fontSize: 15,
-          fontFamily: "Exo",
           fontWeight: FontWeight.w700,
         ),
         bodyLarge: TextStyle(
           color: Colors.grey,
-          fontSize: 20,
         ),
         bodyMedium: TextStyle(
           color: Colors.grey,
-          fontSize: 18,
         ),
         bodySmall: TextStyle(
           color: Colors.grey,
-          fontSize: 15,
         ),
       ),
       scaffoldBackgroundColor: const Color(0xFFFFFFFF),
@@ -192,14 +178,12 @@ class Theme {
         systemOverlayStyle: SystemUiOverlayStyle.light,
         titleTextStyle: TextStyle(
           color: Colors.black,
-          fontSize: 20,
         ),
         iconTheme: IconThemeData(
           color: Colors.black,
         ),
         actionsIconTheme: IconThemeData(
           color: Colors.black,
-          size: 40,
         ),
         color: Colors.black,
       ),

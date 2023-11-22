@@ -1,6 +1,7 @@
 import 'package:expenser/models/expense.dart';
 import 'package:expenser/utils/date_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -71,11 +72,11 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                       icon: Icon(
                         Icons.arrow_back,
                         size: 25,
-                        color: Theme.of(context).colorScheme.primary,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                       style: ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(
-                          Theme.of(context).colorScheme.onPrimary,
+                          Theme.of(context).colorScheme.primary,
                         ),
                       ),
                     ),
@@ -114,6 +115,9 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                                   autofocus: true,
                                   controller: _amountController,
                                   keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   decoration: InputDecoration(
                                     border: const UnderlineInputBorder(),
                                     hintText: '0',
@@ -280,7 +284,7 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(
-                          Theme.of(context).colorScheme.primaryContainer,
+                          Theme.of(context).colorScheme.primary,
                         ),
                         shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(
@@ -290,7 +294,9 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                       ),
                       child: Text(
                         'Save',
-                        style: Theme.of(context).textTheme.labelLarge,
+                        style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
                       ),
                     ),
                   ],

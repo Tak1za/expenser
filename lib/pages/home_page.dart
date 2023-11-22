@@ -109,11 +109,11 @@ class _HomePageState extends State<HomePage> {
                     icon: Icon(
                       Icons.add,
                       size: 25,
-                      color: Theme.of(context).colorScheme.primary,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                     style: ButtonStyle(
                       backgroundColor: MaterialStatePropertyAll(
-                        Theme.of(context).colorScheme.onPrimary,
+                        Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   )

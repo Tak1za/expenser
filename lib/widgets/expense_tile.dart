@@ -68,7 +68,7 @@ class ExpenseTile extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         child: const Text(
-                          'Yes',
+                          'OK',
                         ),
                       ),
                     ],
@@ -83,7 +83,7 @@ class ExpenseTile extends StatelessWidget {
         margin: const EdgeInsets.all(10),
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: Theme.of(context).colorScheme.background,
           border: Border.all(width: 1),
           borderRadius: BorderRadius.circular(20),
         ),

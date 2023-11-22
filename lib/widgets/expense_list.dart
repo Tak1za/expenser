@@ -20,32 +20,49 @@ class ExpenseList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: GroupedListView(
-        shrinkWrap: true,
-        elements: dataToRender,
-        groupBy: (element) => element.timestamp,
-        groupComparator: (value1, value2) => value2.compareTo(value1),
-        order: GroupedListOrder.ASC,
-        groupSeparatorBuilder: (DateTime value) => Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            value.isToday
-                ? "Today"
-                : value.isYesterday
-                    ? "Yesterday"
-                    : DateFormat.yMMMEd('en_US').format(value),
-            textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        itemBuilder: (c, element) {
-          return ExpenseTile(
-            expense: element,
-            editExpense: editExpense,
-            deleteExpense: deleteExpense,
-          );
-        },
-      ),
+      child: dataToRender.isEmpty
+          ? Container(
+              margin: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
+                child: Text(
+                  "Start by adding your expenses",
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+            )
+          : GroupedListView(
+              shrinkWrap: true,
+              elements: dataToRender,
+              groupBy: (element) => element.timestamp,
+              groupComparator: (value1, value2) => value2.compareTo(value1),
+              order: GroupedListOrder.ASC,
+              groupSeparatorBuilder: (DateTime value) => Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  value.isToday
+                      ? "Today"
+                      : value.isYesterday
+                          ? "Yesterday"
+                          : DateFormat.yMMMEd('en_US').format(value),
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+              itemBuilder: (c, element) {
+                return ExpenseTile(
+                  expense: element,
+                  editExpense: editExpense,
+                  deleteExpense: deleteExpense,
+                );
+              },
+            ),
     );
   }
 }

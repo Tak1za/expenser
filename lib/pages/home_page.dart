@@ -24,9 +24,9 @@ class _HomePageState extends State<HomePage> {
     Expense(
       id: uuid.v4(),
       timestamp: HomePage.currentDate.subtract(const Duration(days: 4)),
-      category: "Pets",
+      category: "Food",
       modeOfPayment: "Credit Card",
-      description: "Treats",
+      description: "ITC",
       amount: 520,
     ),
     Expense(
@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage> {
     Expense(
       id: uuid.v4(),
       timestamp: HomePage.currentDate,
-      category: "Dinner",
+      category: "Food",
       modeOfPayment: "Credit Card",
       description: "Call me Chow",
       amount: 270,

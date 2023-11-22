@@ -1,8 +1,9 @@
 import 'package:expenser/models/expense.dart';
-import 'package:expenser/pages/add_expense.dart';
+import 'package:expenser/pages/modify_expense.dart';
 import 'package:expenser/widgets/expense_list.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,38 +18,46 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  static const uuid = Uuid();
+
   var dataToRender = [
     Expense(
+      id: uuid.v4(),
       timestamp: HomePage.currentDate.subtract(const Duration(days: 4)),
       category: "Pets",
       description: "Treats",
       amount: 520,
     ),
     Expense(
+      id: uuid.v4(),
       timestamp: HomePage.currentDate.subtract(const Duration(days: 3)),
       category: "Snacks",
       description: "",
       amount: 340,
     ),
     Expense(
+      id: uuid.v4(),
       timestamp: HomePage.currentDate.subtract(const Duration(days: 3)),
       category: "Coffee",
       description: "Starbucks",
       amount: 350,
     ),
     Expense(
+      id: uuid.v4(),
       timestamp: HomePage.currentDate.subtract(const Duration(days: 2)),
       category: "Gifts",
       description: "Sanyam's Birthday",
       amount: 1250,
     ),
     Expense(
+      id: uuid.v4(),
       timestamp: HomePage.currentDate.subtract(const Duration(days: 1)),
       category: "Coffee",
       description: "Starbucks",
       amount: 350,
     ),
     Expense(
+      id: uuid.v4(),
       timestamp: HomePage.currentDate,
       category: "Dinner",
       description: "Call me Chow",
@@ -59,6 +68,20 @@ class _HomePageState extends State<HomePage> {
   void addExpense(Expense expense) {
     setState(() {
       dataToRender.add(expense);
+    });
+  }
+
+  void editExpense(Expense expense) {
+    setState(() {
+      final index =
+          dataToRender.indexWhere((element) => element.id == expense.id);
+      dataToRender[index] = expense;
+    });
+  }
+
+  void deleteExpense(Expense expense) {
+    setState(() {
+      dataToRender.removeWhere((element) => element.id == expense.id);
     });
   }
 
@@ -79,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              AddExpense(addExpense: addExpense),
+                              ModifyExpense(addExpense: addExpense),
                         ),
                       );
                     },
@@ -104,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Text(
                     "Spent this week",
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   Text(
                     NumberFormat.currency(
@@ -125,6 +148,8 @@ class _HomePageState extends State<HomePage> {
             ),
             ExpenseList(
               dataToRender: dataToRender,
+              editExpense: editExpense,
+              deleteExpense: deleteExpense,
             ),
           ],
         ),

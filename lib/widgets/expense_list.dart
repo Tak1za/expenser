@@ -7,7 +7,15 @@ import 'package:intl/intl.dart';
 
 class ExpenseList extends StatelessWidget {
   final List<Expense> dataToRender;
-  const ExpenseList({super.key, required this.dataToRender});
+  final Function editExpense;
+  final Function deleteExpense;
+
+  const ExpenseList({
+    super.key,
+    required this.dataToRender,
+    required this.editExpense,
+    required this.deleteExpense,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +35,15 @@ class ExpenseList extends StatelessWidget {
                     ? "Yesterday"
                     : DateFormat.yMMMEd('en_US').format(value),
             textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
         itemBuilder: (c, element) {
-          return ExpenseTile(expense: element);
+          return ExpenseTile(
+            expense: element,
+            editExpense: editExpense,
+            deleteExpense: deleteExpense,
+          );
         },
       ),
     );

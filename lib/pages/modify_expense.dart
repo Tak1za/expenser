@@ -2,28 +2,33 @@ import 'package:expenser/models/expense.dart';
 import 'package:expenser/utils/date_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
-class AddExpense extends StatefulWidget {
-  final Function addExpense;
-  const AddExpense({super.key, required this.addExpense});
+class ModifyExpense extends StatefulWidget {
+  final Function? addExpense;
+  final Function? editExpense;
+  final Expense? expenseToEdit;
+
+  const ModifyExpense(
+      {super.key, this.addExpense, this.editExpense, this.expenseToEdit});
 
   static const _locale = 'en_IN';
 
   @override
-  State<AddExpense> createState() => _AddExpenseState();
+  State<ModifyExpense> createState() => _ModifyExpenseState();
 }
 
-class _AddExpenseState extends State<AddExpense> {
+class _ModifyExpenseState extends State<ModifyExpense> {
   final _amountController = TextEditingController();
 
   final _noteController = TextEditingController();
 
   String _formatNumber(String s) =>
-      NumberFormat.decimalPattern(AddExpense._locale)
+      NumberFormat.decimalPattern(ModifyExpense._locale)
           .format(s != "" ? int.parse(s) : 0);
 
   String get _currency =>
-      NumberFormat.compactSimpleCurrency(locale: AddExpense._locale)
+      NumberFormat.compactSimpleCurrency(locale: ModifyExpense._locale)
           .currencySymbol;
 
   static final DateTime _selectedTime = DateTime.now();
@@ -33,7 +38,18 @@ class _AddExpenseState extends State<AddExpense> {
   @override
   void initState() {
     super.initState();
+    if (widget.expenseToEdit != null) {
+      _amountController.text = NumberFormat.currency(
+        locale: "en_IN",
+        symbol: "",
+        decimalDigits: 0,
+      ).format(widget.expenseToEdit!.amount);
+      _noteController.text = widget.expenseToEdit!.description.toString();
+      _selectedDate = widget.expenseToEdit!.timestamp;
+    }
   }
+
+  static const uuid = Uuid();
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +81,7 @@ class _AddExpenseState extends State<AddExpense> {
                     ),
                     Text(
                       'Expense',
-                      style: Theme.of(context).textTheme.headlineMedium,
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(
                       width: 50,
@@ -156,7 +172,7 @@ class _AddExpenseState extends State<AddExpense> {
                             maxLines: null,
                             decoration: InputDecoration.collapsed(
                               hintText: 'Add a Note',
-                              hintStyle: Theme.of(context).textTheme.bodySmall,
+                              hintStyle: Theme.of(context).textTheme.bodyMedium,
                             ),
                             textInputAction: TextInputAction.done,
                             style: TextStyle(
@@ -207,7 +223,7 @@ class _AddExpenseState extends State<AddExpense> {
                                     ? 'Yesterday'
                                     : DateFormat.yMMMEd('en_US')
                                         .format(_selectedDate),
-                            style: Theme.of(context).textTheme.labelMedium,
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ),
                         TextButton.icon(
@@ -217,7 +233,7 @@ class _AddExpenseState extends State<AddExpense> {
                           ),
                           label: Text(
                             'Credit Card',
-                            style: Theme.of(context).textTheme.labelMedium,
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ),
                         TextButton.icon(
@@ -227,23 +243,40 @@ class _AddExpenseState extends State<AddExpense> {
                           ),
                           label: Text(
                             'Category',
-                            style: Theme.of(context).textTheme.labelMedium,
+                            style: Theme.of(context).textTheme.labelLarge,
                           ),
                         ),
                       ],
                     ),
                     TextButton(
                       onPressed: () {
-                        widget.addExpense(
-                          Expense(
-                            category: "Test",
-                            amount: double.parse(
-                                _amountController.text.replaceAll(',', '')),
-                            description: _noteController.text,
-                            timestamp: _selectedDate,
-                          ),
-                        );
-                        Navigator.pop(context);
+                        if (widget.addExpense != null) {
+                          widget.addExpense!(
+                            Expense(
+                              id: uuid.v4(),
+                              category: "Test",
+                              amount: double.parse(
+                                  _amountController.text.replaceAll(',', '')),
+                              description: _noteController.text,
+                              timestamp: _selectedDate,
+                            ),
+                          );
+                          Navigator.pop(context);
+                        }
+
+                        if (widget.editExpense != null) {
+                          widget.editExpense!(
+                            Expense(
+                              id: widget.expenseToEdit!.id,
+                              category: "Test",
+                              amount: double.parse(
+                                  _amountController.text.replaceAll(',', '')),
+                              description: _noteController.text,
+                              timestamp: _selectedDate,
+                            ),
+                          );
+                          Navigator.pop(context);
+                        }
                       },
                       style: ButtonStyle(
                         backgroundColor: MaterialStatePropertyAll(
@@ -257,7 +290,7 @@ class _AddExpenseState extends State<AddExpense> {
                       ),
                       child: Text(
                         'Save',
-                        style: Theme.of(context).textTheme.labelMedium,
+                        style: Theme.of(context).textTheme.labelLarge,
                       ),
                     ),
                   ],

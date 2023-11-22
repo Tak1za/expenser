@@ -48,44 +48,35 @@ class Theme {
         labelLarge: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 20,
         ),
         labelMedium: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 18,
         ),
         labelSmall: TextStyle(
           color: Colors.white,
           fontWeight: FontWeight.bold,
-          fontSize: 15,
         ),
         headlineLarge: TextStyle(
           color: Colors.white,
-          fontSize: 20,
           fontWeight: FontWeight.w700,
         ),
         headlineMedium: TextStyle(
           color: Colors.white,
-          fontSize: 18,
           fontWeight: FontWeight.w700,
         ),
         headlineSmall: TextStyle(
           color: Colors.white,
-          fontSize: 15,
           fontWeight: FontWeight.w700,
         ),
         bodyLarge: TextStyle(
           color: Colors.grey,
-          fontSize: 20,
         ),
         bodyMedium: TextStyle(
           color: Colors.grey,
-          fontSize: 18,
         ),
         bodySmall: TextStyle(
           color: Colors.grey,
-          fontSize: 15,
         ),
       ),
       scaffoldBackgroundColor: const Color(0x00121212),

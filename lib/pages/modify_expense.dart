@@ -20,22 +20,16 @@ class ModifyExpense extends StatefulWidget {
 
 class _ModifyExpenseState extends State<ModifyExpense> {
   final _amountController = TextEditingController();
-
   final _noteController = TextEditingController();
-
+  var _selectedModeOfPayment = 'Credit Card';
+  var _selectedCategory = 'Groceries';
   String _formatNumber(String s) => NumberFormat.decimalPattern(widget._locale)
       .format(s != "" ? int.parse(s) : 0);
-
   String get _currency =>
       NumberFormat.compactSimpleCurrency(locale: widget._locale).currencySymbol;
-
   static final DateTime _selectedTime = DateTime.now();
   var _selectedDate =
       DateTime(_selectedTime.year, _selectedTime.month, _selectedTime.day);
-
-  var _selectedModeOfPayment = 'Credit Card';
-
-  var _selectedCategory = 'Groceries';
 
   @override
   void initState() {
@@ -234,7 +228,7 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                           ),
                         ),
                         TextButton.icon(
-                          onPressed: () => showBarModalBottomSheet(
+                          onPressed: () async => await showBarModalBottomSheet(
                             backgroundColor:
                                 Theme.of(context).colorScheme.background,
                             context: context,
@@ -293,7 +287,7 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                           ),
                         ),
                         TextButton.icon(
-                          onPressed: () => showBarModalBottomSheet(
+                          onPressed: () async => await showBarModalBottomSheet(
                             backgroundColor:
                                 Theme.of(context).colorScheme.background,
                             context: context,
@@ -454,7 +448,7 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                       ],
                     ),
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (widget.expenseToEdit == null) {
                           // create mode
                           Provider.of<ExpenseProvider>(context, listen: false)

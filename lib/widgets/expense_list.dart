@@ -1,4 +1,3 @@
-import 'package:expenser/app_constants.dart';
 import 'package:expenser/provider/expense.dart';
 import 'package:expenser/utils/date_helper.dart';
 import 'package:expenser/widgets/expense_tile.dart';
@@ -7,48 +6,45 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class ExpenseList extends StatefulWidget {
+class ExpenseList extends StatelessWidget {
   const ExpenseList({
     super.key,
   });
 
   @override
-  State<ExpenseList> createState() => _ExpenseListState();
-}
-
-class _ExpenseListState extends State<ExpenseList> {
-  final expenseProvider =
-      Provider.of<ExpenseProvider>(AppConstants.globalNavKey.currentContext!);
-
-  @override
-  void initState() {
-    expenseProvider.fetchExpenses();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Consumer<ExpenseProvider>(
-        builder: (BuildContext context, ExpenseProvider expenseProvider, _) {
-          return expenseProvider.expenses.isEmpty
-              ? Container(
-                  margin: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                      width: 2,
+        builder: (context, expenseProvider, _) {
+          return FutureBuilder(
+              future: expenseProvider.fetchExpenses(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+                if (expenseProvider.expenses.isEmpty) {
+                  return Container(
+                    margin: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Start by adding your expenses",
-                      style: Theme.of(context).textTheme.bodyLarge,
+                    child: Center(
+                      child: Text(
+                        "Start by adding your expenses",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
                     ),
-                  ),
-                )
-              : GroupedListView(
+                  );
+                }
+
+                return GroupedListView(
                   shrinkWrap: true,
                   elements: expenseProvider.expenses,
                   groupBy: (element) => element.timestamp,
@@ -72,6 +68,7 @@ class _ExpenseListState extends State<ExpenseList> {
                     );
                   },
                 );
+              });
         },
       ),
     );

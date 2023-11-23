@@ -1,4 +1,3 @@
-import 'package:expenser/app_constants.dart';
 import 'package:expenser/pages/home_page.dart';
 import 'package:expenser/provider/expense.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,6 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => ExpenseProvider(),
       child: MaterialApp(
-        navigatorKey: AppConstants.globalNavKey,
         title: 'Flutter Demo',
         theme: t.Theme.light(),
         darkTheme: t.Theme.dark(),

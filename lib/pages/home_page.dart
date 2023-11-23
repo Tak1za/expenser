@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
+
   final _locale = "en_IN";
 
   @override
@@ -21,8 +22,8 @@ class HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton.outlined(
-                    onPressed: () {
-                      Navigator.push(
+                    onPressed: () async {
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const ModifyExpense(),
@@ -54,16 +55,29 @@ class HomePage extends StatelessWidget {
                   ),
                   Consumer<ExpenseProvider>(
                     builder: (context, expenseProvider, _) {
-                      return Text(
-                        NumberFormat.currency(
-                          locale: _locale,
-                          symbol:
-                              "${NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol} ",
-                          decimalDigits: 0,
-                        ).format(
-                          expenseProvider.totalSpent,
-                        ),
-                        style: Theme.of(context).textTheme.displayLarge,
+                      return FutureBuilder(
+                        future: expenseProvider.expenditure(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Text(
+                              '...',
+                              style: Theme.of(context).textTheme.displayLarge,
+                            );
+                          }
+
+                          return Text(
+                            NumberFormat.currency(
+                              locale: _locale,
+                              symbol:
+                                  "${NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol} ",
+                              decimalDigits: 0,
+                            ).format(
+                              expenseProvider.totalSpent,
+                            ),
+                            style: Theme.of(context).textTheme.displayLarge,
+                          );
+                        },
                       );
                     },
                   ),

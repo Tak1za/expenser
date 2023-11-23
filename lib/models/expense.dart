@@ -14,4 +14,26 @@ class Expense {
     required this.description,
     required this.amount,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'timestamp': timestamp.toIso8601String(),
+      'category': category,
+      'modeOfPayment': modeOfPayment,
+      'description': description,
+      'amount': amount
+    };
+  }
+
+  factory Expense.fromMap(Map<String, dynamic> map) {
+    return Expense(
+      id: map['id'],
+      timestamp: DateTime.parse(map['timestamp']),
+      category: map['category'],
+      modeOfPayment: map['modeOfPayment'],
+      description: map['description'],
+      amount: map['amount'],
+    );
+  }
 }

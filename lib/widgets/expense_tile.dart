@@ -27,9 +27,9 @@ class ExpenseTile extends StatelessWidget {
             ListTile(
               title: const Text('Edit'),
               leading: const Icon(Icons.edit),
-              onTap: () {
+              onTap: () async {
                 Navigator.of(context).pop();
-                Navigator.of(context).push(
+                await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => ModifyExpense(
                       expenseToEdit: expense,
@@ -59,7 +59,7 @@ class ExpenseTile extends StatelessWidget {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async {
                           Provider.of<ExpenseProvider>(context, listen: false)
                               .removeExpense(expense);
                           Navigator.pop(context);

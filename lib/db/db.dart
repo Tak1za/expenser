@@ -1,91 +1,74 @@
 import 'package:expenser/models/expense.dart';
-import 'package:uuid/uuid.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart' as p;
 
 class DB {
-  static final DateTime currentTime = DateTime.now();
-  static DateTime currentDate =
-      DateTime(currentTime.year, currentTime.month, currentTime.day);
-  static const uuid = Uuid();
+  Database? _database;
 
-  final List<Expense> _items = [
-    Expense(
-      id: uuid.v4(),
-      timestamp: currentDate.subtract(const Duration(days: 4)),
-      category: "Food",
-      modeOfPayment: "Credit Card",
-      description: "ITC",
-      amount: 520,
-    ),
-    Expense(
-      id: uuid.v4(),
-      timestamp: currentDate.subtract(const Duration(days: 3)),
-      category: "Snacks",
-      modeOfPayment: "Credit Card",
-      description: "",
-      amount: 340,
-    ),
-    Expense(
-      id: uuid.v4(),
-      timestamp: currentDate.subtract(const Duration(days: 3)),
-      category: "Coffee",
-      modeOfPayment: "Credit Card",
-      description: "Starbucks",
-      amount: 350,
-    ),
-    Expense(
-      id: uuid.v4(),
-      timestamp: currentDate.subtract(const Duration(days: 2)),
-      category: "Gifts",
-      modeOfPayment: "Credit Card",
-      description: "Sanyam's Birthday",
-      amount: 1250,
-    ),
-    Expense(
-      id: uuid.v4(),
-      timestamp: currentDate.subtract(const Duration(days: 1)),
-      category: "Coffee",
-      modeOfPayment: "Cash",
-      description: "Starbucks",
-      amount: 350,
-    ),
-    Expense(
-      id: uuid.v4(),
-      timestamp: currentDate,
-      category: "Food",
-      modeOfPayment: "Credit Card",
-      description: "Call me Chow",
-      amount: 270,
-    ),
-  ];
-  static final DB _db = DB._privateConstructor();
-
-  DB._privateConstructor();
-
-  factory DB() {
-    return _db;
+  Future<void> _onCreate(Database db, int version) async {
+    await db.execute('''
+      CREATE TABLE expenses(
+        id TEXT PRIMARY KEY,
+        timestamp TEXT,
+        category TEXT,
+        modeOfPayment TEXT,
+        description TEXT,
+        amount REAL
+      )
+    ''');
   }
 
-  void insert(Expense item) {
-    _items.add(item);
+  Future<Database> initDatabase() async {
+    String databasesPath = await getDatabasesPath();
+    String path = p.join(databasesPath, 'expenser.db');
+
+    return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
-  void remove(Expense item) {
-    _items.removeWhere((element) => element.id == item.id);
+  Future<Database?> get database async {
+    if (_database != null) return _database;
+
+    _database = await initDatabase();
+    return _database;
   }
 
-  void update(Expense item) {
-    final index = _items.indexWhere((element) => element.id == item.id);
-    _items[index] = item;
+  Future<List<Expense>> getExpenses() async {
+    var db = await database;
+    var maps = await db!.query('expenses');
+    return List.generate(maps.length, (index) => Expense.fromMap(maps[index]));
   }
 
-  double totalSpent() {
-    return _items.fold(
-      0.0,
-      (value, element) => value + element.amount,
+  Future<void> insertExpense(Expense expense) async {
+    var db = await database;
+    await db!.insert('expenses', expense.toMap());
+  }
+
+  Future<void> updateExpense(Expense expense) async {
+    var db = await database;
+    await db!.update(
+      'expenses',
+      expense.toMap(),
+      where: 'id = ?',
+      whereArgs: [expense.id],
     );
   }
 
-  List<Expense> list() {
-    return _items;
+  Future<void> deleteExpense(Expense expense) async {
+    var db = await database;
+    await db!.delete(
+      'expenses',
+      where: 'id = ?',
+      whereArgs: [expense.id],
+    );
+  }
+
+  Future<double> totalSpent() async {
+    var db = await database;
+    var result = await db!.rawQuery('SELECT SUM(amount) FROM expenses');
+    var value = result[0]['SUM(amount)'].toString();
+    if (value == "null") {
+      return 0.0;
+    }
+    return double.parse(value);
   }
 }

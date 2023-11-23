@@ -1,95 +1,13 @@
-import 'package:expenser/models/expense.dart';
 import 'package:expenser/pages/modify_expense.dart';
+import 'package:expenser/provider/expense.dart';
 import 'package:expenser/widgets/expense_list.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
+import 'package:provider/provider.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
-
-  static const _locale = "en_IN";
-  static final DateTime currentTime = DateTime.now();
-  static DateTime currentDate =
-      DateTime(currentTime.year, currentTime.month, currentTime.day);
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  static const uuid = Uuid();
-
-  var dataToRender = [
-    Expense(
-      id: uuid.v4(),
-      timestamp: HomePage.currentDate.subtract(const Duration(days: 4)),
-      category: "Food",
-      modeOfPayment: "Credit Card",
-      description: "ITC",
-      amount: 520,
-    ),
-    Expense(
-      id: uuid.v4(),
-      timestamp: HomePage.currentDate.subtract(const Duration(days: 3)),
-      category: "Snacks",
-      modeOfPayment: "Credit Card",
-      description: "",
-      amount: 340,
-    ),
-    Expense(
-      id: uuid.v4(),
-      timestamp: HomePage.currentDate.subtract(const Duration(days: 3)),
-      category: "Coffee",
-      modeOfPayment: "Credit Card",
-      description: "Starbucks",
-      amount: 350,
-    ),
-    Expense(
-      id: uuid.v4(),
-      timestamp: HomePage.currentDate.subtract(const Duration(days: 2)),
-      category: "Gifts",
-      modeOfPayment: "Credit Card",
-      description: "Sanyam's Birthday",
-      amount: 1250,
-    ),
-    Expense(
-      id: uuid.v4(),
-      timestamp: HomePage.currentDate.subtract(const Duration(days: 1)),
-      category: "Coffee",
-      modeOfPayment: "Cash",
-      description: "Starbucks",
-      amount: 350,
-    ),
-    Expense(
-      id: uuid.v4(),
-      timestamp: HomePage.currentDate,
-      category: "Food",
-      modeOfPayment: "Credit Card",
-      description: "Call me Chow",
-      amount: 270,
-    ),
-  ];
-
-  void addExpense(Expense expense) {
-    setState(() {
-      dataToRender.add(expense);
-    });
-  }
-
-  void editExpense(Expense expense) {
-    setState(() {
-      final index =
-          dataToRender.indexWhere((element) => element.id == expense.id);
-      dataToRender[index] = expense;
-    });
-  }
-
-  void deleteExpense(Expense expense) {
-    setState(() {
-      dataToRender.removeWhere((element) => element.id == expense.id);
-    });
-  }
+  final _locale = "en_IN";
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +25,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              ModifyExpense(addExpense: addExpense),
+                          builder: (context) => const ModifyExpense(),
                         ),
                       );
                     },
@@ -135,28 +52,25 @@ class _HomePageState extends State<HomePage> {
                     "Spent this week",
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
-                  Text(
-                    NumberFormat.currency(
-                      locale: HomePage._locale,
-                      symbol:
-                          "${NumberFormat.compactSimpleCurrency(locale: HomePage._locale).currencySymbol} ",
-                      decimalDigits: 0,
-                    ).format(
-                      dataToRender.fold(
-                        0.0,
-                        (value, element) => value + element.amount,
-                      ),
-                    ),
-                    style: Theme.of(context).textTheme.displayLarge,
-                  )
+                  Consumer<ExpenseProvider>(
+                    builder: (context, expenseProvider, _) {
+                      return Text(
+                        NumberFormat.currency(
+                          locale: _locale,
+                          symbol:
+                              "${NumberFormat.compactSimpleCurrency(locale: _locale).currencySymbol} ",
+                          decimalDigits: 0,
+                        ).format(
+                          expenseProvider.totalSpent,
+                        ),
+                        style: Theme.of(context).textTheme.displayLarge,
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
-            ExpenseList(
-              dataToRender: dataToRender,
-              editExpense: editExpense,
-              deleteExpense: deleteExpense,
-            ),
+            const ExpenseList(),
           ],
         ),
       ),

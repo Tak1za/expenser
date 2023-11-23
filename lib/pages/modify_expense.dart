@@ -1,20 +1,18 @@
 import 'package:expenser/models/expense.dart';
+import 'package:expenser/provider/expense.dart';
 import 'package:expenser/utils/date_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class ModifyExpense extends StatefulWidget {
-  final Function? addExpense;
-  final Function? editExpense;
   final Expense? expenseToEdit;
+  final _locale = 'en_IN';
 
-  const ModifyExpense(
-      {super.key, this.addExpense, this.editExpense, this.expenseToEdit});
-
-  static const _locale = 'en_IN';
+  const ModifyExpense({super.key, this.expenseToEdit});
 
   @override
   State<ModifyExpense> createState() => _ModifyExpenseState();
@@ -25,13 +23,11 @@ class _ModifyExpenseState extends State<ModifyExpense> {
 
   final _noteController = TextEditingController();
 
-  String _formatNumber(String s) =>
-      NumberFormat.decimalPattern(ModifyExpense._locale)
-          .format(s != "" ? int.parse(s) : 0);
+  String _formatNumber(String s) => NumberFormat.decimalPattern(widget._locale)
+      .format(s != "" ? int.parse(s) : 0);
 
   String get _currency =>
-      NumberFormat.compactSimpleCurrency(locale: ModifyExpense._locale)
-          .currencySymbol;
+      NumberFormat.compactSimpleCurrency(locale: widget._locale).currencySymbol;
 
   static final DateTime _selectedTime = DateTime.now();
   var _selectedDate =
@@ -459,8 +455,10 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                     ),
                     TextButton(
                       onPressed: () {
-                        if (widget.addExpense != null) {
-                          widget.addExpense!(
+                        if (widget.expenseToEdit == null) {
+                          // create mode
+                          Provider.of<ExpenseProvider>(context, listen: false)
+                              .createExpense(
                             Expense(
                               id: uuid.v4(),
                               category: _selectedCategory,
@@ -471,11 +469,16 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                               timestamp: _selectedDate,
                             ),
                           );
+
                           Navigator.pop(context);
+                          _amountController.clear();
+                          _noteController.clear();
                         }
 
-                        if (widget.editExpense != null) {
-                          widget.editExpense!(
+                        if (widget.expenseToEdit != null) {
+                          // edit mode
+                          Provider.of<ExpenseProvider>(context, listen: false)
+                              .updateExpense(
                             Expense(
                               id: widget.expenseToEdit!.id,
                               category: _selectedCategory,
@@ -486,7 +489,10 @@ class _ModifyExpenseState extends State<ModifyExpense> {
                               timestamp: _selectedDate,
                             ),
                           );
+
                           Navigator.pop(context);
+                          _amountController.clear();
+                          _noteController.clear();
                         }
                       },
                       style: ButtonStyle(

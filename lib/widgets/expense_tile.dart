@@ -1,22 +1,19 @@
 import 'package:expenser/models/expense.dart';
 import 'package:expenser/pages/modify_expense.dart';
+import 'package:expenser/provider/expense.dart';
 import 'package:flutter/material.dart' hide ModalBottomSheetRoute;
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:provider/provider.dart';
 
 class ExpenseTile extends StatelessWidget {
   final Expense expense;
-  final Function editExpense;
-  final Function deleteExpense;
+  final _locale = "en_IN";
 
   const ExpenseTile({
     super.key,
     required this.expense,
-    required this.editExpense,
-    required this.deleteExpense,
   });
-
-  static const _locale = "en_IN";
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +33,6 @@ class ExpenseTile extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => ModifyExpense(
                       expenseToEdit: expense,
-                      editExpense: editExpense,
                     ),
                   ),
                 );
@@ -64,7 +60,8 @@ class ExpenseTile extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          deleteExpense(expense);
+                          Provider.of<ExpenseProvider>(context, listen: false)
+                              .removeExpense(expense);
                           Navigator.pop(context);
                         },
                         child: const Text(
